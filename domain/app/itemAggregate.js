@@ -4,15 +4,15 @@
 
   colors = require("./colors");
 
-  Item = function(id) {
-    this.id = id;
-    this.text = "";
-    this._destroy = false;
-    return this.uncommittedEvents = [];
-  };
+  Item = (function() {
+    function Item(id) {
+      this.id = id;
+      this.text = "";
+      this._destroy = false;
+      this.uncommittedEvents = [];
+    }
 
-  Item.prototype = {
-    createItem: function(evt, callback) {
+    Item.prototype.createItem = function(evt, callback) {
       evt.payload.id = this.id;
       if (evt.payload.text === "") {
         return callback(new Error("It is not allowed to set an item text to empty string."));
@@ -20,35 +20,42 @@
         this.apply(evt);
         return callback(null, this.uncommittedEvents);
       }
-    },
-    changeItem: function(evt, callback) {
+    };
+
+    Item.prototype.changeItem = function(evt, callback) {
       if (evt.payload.text === "") {
         return callback(new Error("It is not allowed to set an item text to empty string."));
       } else {
         this.apply(evt);
         return callback(null, this.uncommittedEvents);
       }
-    },
-    deleteItem: function(evt, callback) {
+    };
+
+    Item.prototype.deleteItem = function(evt, callback) {
       this.apply(evt);
       return callback(null, this.uncommittedEvents);
-    },
-    apply: function(evt) {
+    };
+
+    Item.prototype.apply = function(evt) {
       this["_" + evt.event](evt);
       if (!evt.fromHistory) {
         return this.uncommittedEvents.push(evt);
       }
-    },
-    _itemCreated: function(evt) {
+    };
+
+    Item.prototype._itemCreated = function(evt) {
       return this.text = evt.payload.text;
-    },
-    _itemChanged: function(evt) {
+    };
+
+    Item.prototype._itemChanged = function(evt) {
       return this.text = evt.payload.text;
-    },
-    _itemDeleted: function(evt) {
+    };
+
+    Item.prototype._itemDeleted = function(evt) {
       return this._destroy = true;
-    },
-    loadFromHistory: function(history) {
+    };
+
+    Item.prototype.loadFromHistory = function(history) {
       var e, i, len, _results;
       i = 0;
       len = history.length;
@@ -60,8 +67,11 @@
         _results.push(i++);
       }
       return _results;
-    }
-  };
+    };
+
+    return Item;
+
+  })();
 
   exports.create = function(id) {
     return new Item(id);

@@ -2,14 +2,13 @@
 # aggregate are handled inside this object.
 colors = require("./colors")
 
-# the itemAggregate has an internal state (id, text, destoyed)
-Item = (id) ->
-  @id = id
-  @text = ""
-  @_destroy = false
-  @uncommittedEvents = []
-
-Item:: =
+# the itemAggregate has an internal state (id, text, destroyed)
+class Item
+  constructor: (id) ->
+    @id = id
+    @text = ""
+    @_destroy = false
+    @uncommittedEvents = []
 
 # each __command__ is mapped to an aggregate function
 # after validation the __event__ is applied to the object itself (changing
