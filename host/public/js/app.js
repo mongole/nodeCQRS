@@ -88,7 +88,7 @@
 
     // view templates
     var itemTemplate = _.template('<%= text %> <a class="deleteItem" href="">delete</a> <a class="editItem" href="">edit</a>');
-    var editItemTemplate = _.template('<input id="newText" type="text" value="<%= text %>"></input><button id="changeItem">save</button>');
+    var editItemTemplate = _.template('<input id="newText" type="text" value="<%= text %>" autofocus/><button id="changeItem">save</button>');
 
     // views
     var ItemView = Backbone.View.extend({
