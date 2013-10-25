@@ -19,3 +19,7 @@ to test all the possible steps:
 check the logs for equality.
 
 automate this stuff!
+
+to check all keys in redis:
+
+ info keyspace
