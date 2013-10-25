@@ -1,0 +1,89 @@
+/home/andi/opt/node-v0.10.12-linux-x64/bin/node domain/server.js
+Starting domain service
+
+received command from redis:
+{
+    "id": "msg1",
+    "command": "createItem",
+    "time": "2013-10-25T07:22:32.662Z",
+    "sender": "127.0.0.1:45247",
+    "payload": {
+        "text": "item 1"
+    }
+}
+
+-> handle command
+create a new aggregate with id= item:1
+load history for id= item:1
+apply existing events 0
+apply new event itemCreated to aggregate
+
+publishing event to redis:
+{
+    "id": "msg1_event_0",
+    "time": "2013-10-25T07:22:32.667Z",
+    "sender": "127.0.0.1:45247",
+    "payload": {
+        "text": "item 1",
+        "id": "item:1"
+    },
+    "event": "itemCreated"
+}
+
+received command from redis:
+{
+    "id": "msg6",
+    "command": "changeItem",
+    "time": "2013-10-25T07:23:14.590Z",
+    "sender": "127.0.0.1:45247",
+    "payload": {
+        "id": "item:1",
+        "text": "edited item 1"
+    }
+}
+
+-> handle command
+create existing aggregate with id= item:1
+load history for id= item:1
+apply existing events 1
+apply new event itemChanged to aggregate
+
+publishing event to redis:
+{
+    "id": "msg6_event_0",
+    "time": "2013-10-25T07:23:14.591Z",
+    "sender": "127.0.0.1:45247",
+    "payload": {
+        "id": "item:1",
+        "text": "edited item 1"
+    },
+    "event": "itemChanged"
+}
+
+received command from redis:
+{
+    "id": "msg9",
+    "command": "deleteItem",
+    "time": "2013-10-25T07:23:17.433Z",
+    "sender": "127.0.0.1:45247",
+    "payload": {
+        "id": "item:1"
+    }
+}
+
+-> handle command
+create existing aggregate with id= item:1
+load history for id= item:1
+apply existing events 2
+apply new event itemDeleted to aggregate
+
+publishing event to redis:
+{
+    "id": "msg9_event_0",
+    "time": "2013-10-25T07:23:17.434Z",
+    "sender": "127.0.0.1:45247",
+    "payload": {
+        "id": "item:1"
+    },
+    "event": "itemDeleted"
+}

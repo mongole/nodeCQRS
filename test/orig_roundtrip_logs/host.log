@@ -1,0 +1,121 @@
+andi@asw001:~/Documents/WebstormProjects/nodeCQRS/host$ node server.js
+   info  - socket.io started
+connect.multipart() will be removed in connect 3.0
+visit https://github.com/senchalabs/connect/wiki/Connect-3.0 for alternatives
+connect.limit() will be removed in connect 3.0
+
+BOOTSTRAPPING:
+1. -> routes
+2. -> message hub
+hub -- subscribers: 1
+
+Starting server on port 3000
+127.0.0.1:45237 -- connects to socket.io
+127.0.0.1:45247 -- connects to socket.io
+
+127.0.0.1:45247 -- sends command createItem:
+{
+    "id": "msg1",
+    "command": "createItem",
+    "payload": {
+        "text": "item 1"
+    }
+}
+
+hub -- publishing command createItem to redis:
+{
+    "id": "msg1",
+    "command": "createItem",
+    "time": "2013-10-25T07:22:32.662Z",
+    "sender": "127.0.0.1:45247",
+    "payload": {
+        "text": "item 1"
+    }
+}
+
+hub -- received event itemCreated from redis:
+{
+    "id": "msg1_event_0",
+    "time": "2013-10-25T07:22:32.667Z",
+    "sender": "127.0.0.1:45247",
+    "payload": {
+        "text": "item 1",
+        "id": "item:1"
+    },
+    "event": "itemCreated"
+}
+eventDenormalizer -- denormalize event itemCreated
+
+socket.io -- publish event itemCreated to browser
+
+127.0.0.1:45247 -- sends command changeItem:
+{
+    "id": "msg6",
+    "command": "changeItem",
+    "payload": {
+        "id": "item:1",
+        "text": "edited item 1"
+    }
+}
+
+hub -- publishing command changeItem to redis:
+{
+    "id": "msg6",
+    "command": "changeItem",
+    "time": "2013-10-25T07:23:14.590Z",
+    "sender": "127.0.0.1:45247",
+    "payload": {
+        "id": "item:1",
+        "text": "edited item 1"
+    }
+}
+
+hub -- received event itemChanged from redis:
+{
+    "id": "msg6_event_0",
+    "time": "2013-10-25T07:23:14.591Z",
+    "sender": "127.0.0.1:45247",
+    "payload": {
+        "id": "item:1",
+        "text": "edited item 1"
+    },
+    "event": "itemChanged"
+}
+eventDenormalizer -- denormalize event itemChanged
+
+socket.io -- publish event itemChanged to browser
+
+127.0.0.1:45247 -- sends command deleteItem:
+{
+    "id": "msg9",
+    "command": "deleteItem",
+    "payload": {
+        "id": "item:1"
+    }
+}
+
+hub -- publishing command deleteItem to redis:
+{
+    "id": "msg9",
+    "command": "deleteItem",
+    "time": "2013-10-25T07:23:17.433Z",
+    "sender": "127.0.0.1:45247",
+    "payload": {
+        "id": "item:1"
+    }
+}
+
+hub -- received event itemDeleted from redis:
+{
+    "id": "msg9_event_0",
+    "time": "2013-10-25T07:23:17.434Z",
+    "sender": "127.0.0.1:45247",
+    "payload": {
+        "id": "item:1"
+    },
+    "event": "itemDeleted"
+}
+eventDenormalizer -- denormalize event itemDeleted
+
+socket.io -- publish event itemDeleted to browser
+
