@@ -29,8 +29,9 @@ exports.on = (channel, callback) ->
 evt.on "message", (channel, message) ->
   data = map.from(channel, message)
   console.log colors.green("\nhub -- received event " + data.event + " from redis:")
-  console.log message
+  console.log message.green
   subscriptions.forEach (subscriber) ->
+    console.log colors.green("should subscriber " + subscriber + " be notified?")
     subscriber.callback data  if channel is subscriber.channel
 
 

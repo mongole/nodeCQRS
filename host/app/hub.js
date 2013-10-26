@@ -34,8 +34,9 @@
     var data;
     data = map.from(channel, message);
     console.log(colors.green("\nhub -- received event " + data.event + " from redis:"));
-    console.log(message);
+    console.log(message.green);
     return subscriptions.forEach(function(subscriber) {
+      console.log(colors.green("should subscriber " + subscriber + " be notified?"));
       if (channel === subscriber.channel) {
         return subscriber.callback(data);
       }
