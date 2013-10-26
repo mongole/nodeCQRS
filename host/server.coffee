@@ -31,6 +31,7 @@ require("./app/routes").actions app
 console.log "2. -> message hub".cyan
 hub = require("./app/hub")
 
+
 # SETUP COMMUNICATION CHANNELS
 
 # on receiving __commands__ from browser via socket.io emit them on the hub module (which will
@@ -51,6 +52,7 @@ io.sockets.on "connection", (socket) ->
 # - forward it to connected browsers via socket.io
 hub.on "events", (data) ->
   console.log colors.cyan("eventDenormalizer -- denormalize event " + data.event)
+  console.log colors.cyan(JSON.stringify(data))
   handler.handle data, null, 4
   console.log colors.magenta("\nsocket.io -- publish event " + data.event + " to browser")
   io.sockets.emit "events", data
